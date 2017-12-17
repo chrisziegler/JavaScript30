@@ -47,31 +47,61 @@
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
-const dob = inventors.sort((a, b) => a.year - b.year)
-  .filter(item => (item.first === 'Max' || item.first === 'Isaac'));
-  console.log('----- SORTed by date of birth--chained FILTER -----');
-console.table(dob);
+    const dob = inventors.sort((a, b) => a.year - b.year)
+      .filter(item => (item.first === 'Max' || item.first === 'Isaac'));
+      console.log('----- SORTed by date of birth--chained FILTER -----');
+    console.table(dob);
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live?
-const lifespan = inventors.reduce((arr, inventor) => {
-  const age = inventor.passed - inventor.year;
-  const fullName = `${inventor.first} ${inventor.last}`;
-  const item = { name: fullName, lifespan: age };
-  arr.push(item);
-  return arr;
-},[])
-console.log('----- added calculated lifespan property [REDUCE()] -----');
-console.table(lifespan);
+    const lifespan = inventors.reduce((arr, inventor) => {
+      const age = inventor.passed - inventor.year;
+      const fullName = `${inventor.first} ${inventor.last}`;
+      const item = { name: fullName, lifespan: age };
+      arr.push(item);
+      return arr;
+    },[])
+    console.log('----- added calculated lifespan property [REDUCE()] -----');
+    console.table(lifespan);
+
+    // 4.5 Hmm, he actually wanted a summation of their total lifespans
+    const lifespanTotal = inventors.reduce((total, inventor) => {
+      total += (inventor.passed - inventor.year);
+      return total;
+    }, 0);
+    console.log('total years lived (for some reason): ', lifespanTotal);
 
     // 5. Sort the inventors by years lived
     // ...uses previous array of inventor objects created in lifespan
-const sortedLifespan = lifespan.sort((a, b) => a.lifespan - b.lifespan);
-console.log('----- SORTed by lifespan -----');
-console.table(sortedLifespan);
+    const sortedLifespan = lifespan.sort((a, b) => a.lifespan - b.lifespan);
+    console.log('----- SORTed by lifespan ascending-----');
+    console.table(sortedLifespan);
+
+    // 5.5 What if we hadn't already stored their lifespans in a separate array?
+    const oldest = inventors.sort((a, b) => {
+      const lastguy = a.passed - a.year;
+      const nextguy = b.passed - b.year;
+      return nextguy - lastguy;
+    })
+    console.log('sorted by lifespans (descending oldest first) - quick method:')
+    console.table(oldest);
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
-
+    // We will first have to fetch whatever DOM element contains this list
+    // in dev tools to inspect
+    const category = document.querySelector('.mw-category');
+    // need to parse a NodeList object into a JS Array
+    // alternatively const links = [...category.querySelectorAll('a')];
+    const links = Array.from(category.querySelectorAll('a'));
+    const de = links
+      .map(link => link.textContent)
+      .filter(streetName => streetName.includes('de'));
+    /* So we're not going to do any website scraping with fetch after all, but we did just 
+    write an inline script to scrub an existing list in html, the results of which are:
+    ["Boulevard de l'Amiral-Bruix", "Boulevard des Capucines", "Boulevard de la Chapelle", 
+    "Boulevard de Clichy", "Boulevard de l'Hôpital", "Boulevard des Italiens", "Boulevard de 
+    la Madeleine", "Boulevard de Magenta", "Boulevard de Rochechouart", "Boulevard de 
+    Sébastopol", "Boulevard de Strasbourg", "Boulevard de la Zone"] */
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
