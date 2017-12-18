@@ -71,6 +71,7 @@
       arr.push(item);
       return arr;
     },[])
+    // we could chain a sorting method on this real easy - see below
     console.log('----- added calculated lifespan property [REDUCE()] -----');
     console.table(lifespan);
 
@@ -122,22 +123,18 @@
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
-    const myData = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+    const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
 
-    const tallyItems = myData.reduce((obj, item) => {
-      // need bracket syntax because item is computed (a dynamic variable)
-      // slightly ninja: obj[item] = obj[item] + 1 |or| obj[item] = 0 + 1
+    const transportation = data.reduce((obj, item) => {
+      // slightly ninja: (obj[item] = obj[item] + 1 |or| obj[item] = 0 + 1)
       // obj[item] = (obj[item] || 0) + 1;
       if(!obj[item]) {
-        // first time seeing an item need to make a key=value pair stored in our object
-        obj[item] = 1;
-      } else {
-        // key already exists in our obj, need to increment its tally
-        obj[item] = obj[item] + 1;
+        obj[item] = 0;
       }
+      obj[item]++;
       return obj;
     }, {})
-    console.log(tallyItems); // {car: 5, truck: 3, bike: 2, walk: 2, van: 2}
+    console.log(transportation); // {car: 5, truck: 3, bike: 2, walk: 2, van: 2}
 
   </script>
 </body>
