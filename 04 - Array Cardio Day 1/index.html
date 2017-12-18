@@ -27,7 +27,17 @@
       { first: 'Hanna', last: 'Hammarström', year: 1829, passed: 1909 }
     ];
 
-    const people = ['Beck, Glenn', 'Becker, Carl', 'Beckett, Samuel', 'Beddoes, Mick', 'Beecher, Henry', 'Beethoven, Ludwig', 'Begin, Menachem', 'Belloc, Hilaire', 'Bellow, Saul', 'Benchley, Robert', 'Benenson, Peter', 'Ben-Gurion, David', 'Benjamin, Walter', 'Benn, Tony', 'Bennington, Chester', 'Benson, Leana', 'Bent, Silas', 'Bentsen, Lloyd', 'Berger, Ric', 'Bergman, Ingmar', 'Berio, Luciano', 'Berle, Milton', 'Berlin, Irving', 'Berne, Eric', 'Bernhard, Sandra', 'Berra, Yogi', 'Berry, Halle', 'Berry, Wendell', 'Bethea, Erin', 'Bevan, Aneurin', 'Bevel, Ken', 'Biden, Joseph', 'Bierce, Ambrose', 'Biko, Steve', 'Billings, Josh', 'Biondo, Frank', 'Birrell, Augustine', 'Black, Elk', 'Blair, Robert', 'Blair, Tony', 'Blake, William'];
+    const people = ['Beck, Glenn', 'Becker, Carl', 'Beckett, Samuel',
+      'Beddoes, Mick', 'Beecher, Henry', 'Beethoven, Ludwig',
+      'Begin, Menachem', 'Belloc, Hilaire', 'Bellow, Saul', 'Benchley, Robert',
+      'Benenson, Peter', 'Ben-Gurion, David', 'Benjamin, Walter', 'Benn, Tony',
+      'Bennington, Chester', 'Benson, Leana', 'Bent, Silas', 'Bentsen, Lloyd',
+      'Berger, Ric', 'Bergman, Ingmar', 'Berio, Luciano', 'Berle, Milton',
+      'Berlin, Irving', 'Berne, Eric', 'Bernhard, Sandra', 'Berra, Yogi',
+      'Berry, Halle', 'Berry, Wendell', 'Bethea, Erin', 'Bevan, Aneurin',
+      'Bevel, Ken', 'Biden, Joseph', 'Bierce, Ambrose', 'Biko, Steve',
+      'Billings, Josh', 'Biondo, Frank', 'Birrell, Augustine', 'Black, Elk',
+      'Blair, Robert', 'Blair, Tony', 'Blake, William'];
 
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
@@ -91,24 +101,43 @@
     // in dev tools to inspect
     const category = document.querySelector('.mw-category');
     // need to parse a NodeList object into a JS Array
-    // alternatively const links = [...category.querySelectorAll('a')];
-    const links = Array.from(category.querySelectorAll('a'));
-    const de = links
-      .map(link => link.textContent)
-      .filter(streetName => streetName.includes('de'));
-    /* So we're not going to do any website scraping with fetch after all, but we did just 
-    write an inline script to scrub an existing list in html, the results of which are:
-    ["Boulevard de l'Amiral-Bruix", "Boulevard des Capucines", "Boulevard de la Chapelle", 
-    "Boulevard de Clichy", "Boulevard de l'Hôpital", "Boulevard des Italiens", "Boulevard de 
-    la Madeleine", "Boulevard de Magenta", "Boulevard de Rochechouart", "Boulevard de 
-    Sébastopol", "Boulevard de Strasbourg", "Boulevard de la Zone"] */
-
+    
+    // // BREAKING CODE IN THIS CONTEXT - WILL ONLY RUN ON SPECIFIC WIKIPEDIA PAGE CONSOLE
+    // //  alternatively const links = [...category.querySelectorAll('a')];
+    // const links = Array.from(category.querySelectorAll('a'));
+    // const de = links
+    //   .map(link => link.textContent)
+    //   .filter(streetName => streetName.includes('de'));
+    
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    const alpha = people.sort((lastItem, nextItem) => {
+      const [aLast, aFirst] = lastItem.split(', ');
+      const [bLast, bFirst] = nextItem.split(', ');
+
+      return aLast > bLast ? 1 : -1;
+    });
+
+    console.log(alpha);
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
-    const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+    const myData = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
+    const tallyItems = myData.reduce((obj, item) => {
+      // need bracket syntax because item is computed (a dynamic variable)
+      // slightly ninja: obj[item] = obj[item] + 1 |or| obj[item] = 0 + 1
+      // obj[item] = (obj[item] || 0) + 1;
+      if(!obj[item]) {
+        // first time seeing an item need to make a key=value pair stored in our object
+        obj[item] = 1;
+      } else {
+        // key already exists in our obj, need to increment its tally
+        obj[item] = obj[item] + 1;
+      }
+      return obj;
+    }, {})
+    console.log(tallyItems); // {car: 5, truck: 3, bike: 2, walk: 2, van: 2}
 
   </script>
 </body>
